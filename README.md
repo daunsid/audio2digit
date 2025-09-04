@@ -120,7 +120,7 @@ print("Predicted digit:", pred)
 ### 8️⃣ Streamlit App
 
 ```bash
-streamlit run app.py
+uv run streamlit run src/app/app.py
 ```
 
 * Upload audio file or record via microphone.
