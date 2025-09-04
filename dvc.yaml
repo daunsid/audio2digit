@@ -1,0 +1,13 @@
+
+
+stages:
+
+  train:
+    cmd: python scripts/train.py
+    deps:
+      - data/processed
+      - scripts/train.py
+      - scripts/datasets.py
+    outs:
+      - models/model_checkpoint
+      - models/final_model
