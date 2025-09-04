@@ -21,3 +21,4 @@ EARLY_STOPING_PATIENCE = 5
 CHECK_POINT_DIR = "/kaggle/working/"
 MODEL_PATH="model_checkpoint/digit_cnn.pth"
 TRACKING_PATH="file:////mlruns"
+EXPERIMENT_NAME = "audio2digit"

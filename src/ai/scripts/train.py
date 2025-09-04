@@ -20,13 +20,11 @@ mlruns_path = os.path.join(os.getcwd(), "mlruns")
 mlflow.set_tracking_uri(f"file://{mlruns_path}")
 tracking_uri = mlflow.get_tracking_uri()
 print(f"Current tracking uri: {tracking_uri}")
-#dagshub.init(repo_owner='daunsid', repo_name='audio2digit', mlflow=True)
 
-experiment_name = "audio2digit"
-experiment = mlflow.get_experiment_by_name(experiment_name)
+experiment = mlflow.get_experiment_by_name(settings.EXPERIMENT_NAME)
 if experiment is None:
-    mlflow.create_experiment(experiment_name)
-mlflow.set_experiment(experiment_name)
+    mlflow.create_experiment(settings.EXPERIMENT_NAME)
+mlflow.set_experiment(settings.EXPERIMENT_NAME)
 
 
 def main():

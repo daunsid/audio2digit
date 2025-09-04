@@ -23,6 +23,7 @@ The project integrates **MLflow** and **DVC** for experiment tracking, versionin
 * Dependency management using **uv**.
 * Predict digits from audio files or in-memory bytes.
 * Interactive **Streamlit** app for live prediction using microphone or file upload.
+* End to end training and experiment `notebook` implementation
 
 ---
 
@@ -45,6 +46,9 @@ pip install uv
 
 # Sync environment
 uv sync
+
+# install project as package
+uv pip install -e .
 ```
 
 * Ensures reproducible Python environment.
