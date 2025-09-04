@@ -1,6 +1,7 @@
 import torch
 import torchaudio
 import io
+import librosa
 from torch.nn import functional as F
 from torch.utils.data import Dataset
 from ai.preprocessing import preprocess
@@ -60,7 +61,21 @@ def load_and_preprocess_audio(audio_path=None, audio_byte=None, target_sr=8000, 
             tens, sr = torchaudio.load(f)
     else:
         raise ValueError("Provide either file path or audio bytes")
+    
     tens = resample(tens, sr, target_sr)
+
+    # A suggested quick fix for the improving robustness for microphone inputs
+    # remove DC offset
+    tens = tens - tens.mean()
+    # RMS normalize to target RMS
+    rms = tens.pow(2).mean().sqrt()
+    target_rms = 0.05
+    tens = tens * (target_rms / (rms + 1e-6))
+    # optional: trim silence
+    num_array = tens.numpy()
+    num_array_trimmed, _ = librosa.effects.trim(num_array, top_db=20)
+    tens = torch.from_numpy(num_array_trimmed)
+
     tens = preprocess(tens)
     mel_length = tens.shape[-1]
     if mel_length < target_len:
