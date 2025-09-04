@@ -5,11 +5,11 @@ stages:
     deps:
     - path: src/ai/scripts/train.py
       hash: md5
-      md5: 94abfc219bc926931222e6c0f64abace
-      size: 5039
+      md5: 3dd92ac21563c5d6ce45243d1d62cb9e
+      size: 4964
     outs:
     - path: model_checkpoint
       hash: md5
-      md5: a8f874524ad4eb467618a5664fde2083.dir
+      md5: 16030a2c68f073cc55e649372a6a1f6f.dir
       size: 2075286
       nfiles: 1

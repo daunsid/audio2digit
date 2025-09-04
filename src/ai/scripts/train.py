@@ -130,7 +130,7 @@ def train_epoch(
     accuracy = 0.0
 
     model.train()
-    for i, (mels, labels) in enumerate(train_loader):
+    for mels, labels in train_loader:
 
         mels = mels.to(device)
         labels = labels.to(device)

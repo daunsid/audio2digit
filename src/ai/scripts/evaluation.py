@@ -1,5 +1,4 @@
 import torch
-import settings
 from torch.utils.data import DataLoader
 from datasets import load_dataset
 import mlflow
@@ -9,13 +8,13 @@ from ai.datasets.datasets import SpokenDigitDataset
 from src.ai.models.baseline_cnn import AudioToDigitModel
 from ai.preprocessing import Preprocess, collate_fn
 from ai.utils import load_state
+from src import settings
 
 
-experiment_name = "audio2digit"
-experiment = mlflow.get_experiment_by_name(experiment_name)
+experiment = mlflow.get_experiment_by_name(settings.EXPERIMENT_NAME)
 if experiment is None:
-    mlflow.create_experiment(experiment_name)
-mlflow.set_experiment(experiment_name)
+    mlflow.create_experiment(settings.EXPERIMENT_NAME)
+mlflow.set_experiment(settings.EXPERIMENT_NAME)
 
 
 def main():
@@ -53,7 +52,7 @@ def evaluate(loader: DataLoader, model: AudioToDigitModel, device: str):
     all_labels = []
 
     with torch.no_grad():
-        for i, (mels, labels) in enumerate(loader):
+        for mels, labels in loader:
             mels, labels = mels.to(device), labels.to(device)
 
             # compute output
