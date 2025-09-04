@@ -1,19 +1,37 @@
+
+import os
 import torch
 import torch.nn as nn
-import settings
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from datasets import load_dataset
 import mlflow
 import mlflow.pytorch
+import dagshub
 from ai.datasets.datasets import SpokenDigitDataset
-from models.baseline_cnn import AudioToDigitModel
+from ai.models.baseline_cnn import AudioToDigitModel
 from ai.preprocessing import Preprocess, collate_fn
 from ai.utils import accuracy_sc
+from ai.utils import save_model
+from src import settings
+
+
+mlruns_path = os.path.join(os.getcwd(), "mlruns")
+mlflow.set_tracking_uri(f"file://{mlruns_path}")
+tracking_uri = mlflow.get_tracking_uri()
+print(f"Current tracking uri: {tracking_uri}")
+#dagshub.init(repo_owner='daunsid', repo_name='audio2digit', mlflow=True)
+
+experiment_name = "audio2digit"
+experiment = mlflow.get_experiment_by_name(experiment_name)
+if experiment is None:
+    mlflow.create_experiment(experiment_name)
+mlflow.set_experiment(experiment_name)
 
 
 def main():
-
+    best_acc = 0.0
+    is_best = False
     ds = load_dataset(settings.DATASET_NAME)
     train_valid_ds = ds['train'].train_test_split(
         test_size=(1-settings.TRAIN_SPLIT)
@@ -84,16 +102,21 @@ def main():
             mlflow.log_metric("val_loss", val_loss, step=epoch)
             mlflow.log_metric("val_accuracy", val_acc, step=epoch)
             # Log model checkpoint
-            mlflow.pytorch.log_model(model, "model_checkpoint")
+            if best_acc < val_acc:
+                best_acc = val_acc
+                is_best = True
+            save_model(
+                {
+                    'state_dict': model.state_dict(),
+                },
+                is_best=is_best
+            )
 
             # Scheduler step
             if settings.LR_SCHEDULER == 'ReduceLROnPlateau':
                 scheduler.step(val_loss)
             else:
                 scheduler.step()
-        
-        # Log final model
-        mlflow.pytorch.log_model(model, "final_model")
 
     return model
 
@@ -132,7 +155,12 @@ def train_epoch(
     return avg_loss, accuracy
 
 
-def validate_epoch(valid_loader: DataLoader, model: AudioToDigitModel, criterion, device: str):
+def validate_epoch(
+    valid_loader: DataLoader,
+    model: AudioToDigitModel,
+    criterion,
+    device: str
+):
     model.eval()
     running_loss = 0.0
     accuracy = 0.0
@@ -151,3 +179,7 @@ def validate_epoch(valid_loader: DataLoader, model: AudioToDigitModel, criterion
     avg_loss = running_loss / len(valid_loader)
     accuracy = accuracy / len(valid_loader)
     return avg_loss, accuracy
+
+
+if __name__ == "__main__":
+    main()

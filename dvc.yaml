@@ -3,11 +3,13 @@
 stages:
 
   train:
-    cmd: python scripts/train.py
+    cmd: uv run python -m ai.scripts.train
     deps:
-      - data/processed
-      - scripts/train.py
-      - scripts/datasets.py
+      - src/ai/scripts/train.py
     outs:
-      - models/model_checkpoint
-      - models/final_model
+      - model_checkpoint
+
+  # evaluate:
+  #   cmd: python scripts/evaluate.py
+  #   deps:
+  #     - scripts/evaluate.py

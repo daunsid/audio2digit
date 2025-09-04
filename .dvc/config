@@ -1,7 +1,9 @@
 [core]
-    remote = audio2digit
+    remote = gdrive-remote
 ['remote "origin"']
     url = s3://dvc
     endpointurl = https://dagshub.com/daunsid/audio2digit.s3
 ['remote "audio2digit"']
     url = gdrive://1oy1l5rnCd9gxAJGVamysQjb03kyhOCde
+['remote "gdrive-remote"']
+    url = gdrive://1nI12Rf45-7hushdFQ0hZ8XmRbAgQsX5V

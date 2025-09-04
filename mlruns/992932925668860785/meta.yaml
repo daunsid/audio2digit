@@ -1,0 +1,6 @@
+artifact_location: file:///home/daunsi/digit-recognizer/mlruns/992932925668860785
+creation_time: 1756986241592
+experiment_id: '992932925668860785'
+last_update_time: 1756986241592
+lifecycle_stage: active
+name: audio2digit

@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/ai/__init__.py
+src/ai/predict.py
+src/ai/preprocessing.py
+src/ai/utils.py
+src/digit_recognizer.egg-info/PKG-INFO
+src/digit_recognizer.egg-info/SOURCES.txt
+src/digit_recognizer.egg-info/dependency_links.txt
+src/digit_recognizer.egg-info/requires.txt
+src/digit_recognizer.egg-info/top_level.txt

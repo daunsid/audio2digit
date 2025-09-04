@@ -1,0 +1,14 @@
+artifact_uri: file:///home/daunsi/digit-recognizer/mlruns/992932925668860785/6ac87bc7c325487d9de1623afddd4fd3/artifacts
+end_time: 1756986458945
+entry_point_name: ''
+experiment_id: '992932925668860785'
+lifecycle_stage: active
+run_id: 6ac87bc7c325487d9de1623afddd4fd3
+run_name: thoughtful-frog-6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756986255289
+status: 3
+tags: []
+user_id: daunsi

@@ -1,0 +1,14 @@
+artifact_uri: file:///home/daunsi/digit-recognizer/mlruns/992932925668860785/099f9488cd5a40ebb3afb19e87304be8/artifacts
+end_time: 1756987404015
+entry_point_name: ''
+experiment_id: '992932925668860785'
+lifecycle_stage: active
+run_id: 099f9488cd5a40ebb3afb19e87304be8
+run_name: dapper-robin-308
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756987403959
+status: 3
+tags: []
+user_id: daunsi

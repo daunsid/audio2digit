@@ -1,0 +1,15 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: uv run python -m ai.scripts.train
+    deps:
+    - path: src/ai/scripts/train.py
+      hash: md5
+      md5: 94abfc219bc926931222e6c0f64abace
+      size: 5039
+    outs:
+    - path: model_checkpoint
+      hash: md5
+      md5: a8f874524ad4eb467618a5664fde2083.dir
+      size: 2075286
+      nfiles: 1

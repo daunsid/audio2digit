@@ -1,16 +1,21 @@
 import torch
-import torch.nn as nn
 import settings
-import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from datasets import load_dataset
 import mlflow
 import mlflow.pytorch
 from sklearn.metrics import accuracy_score, classification_report
 from ai.datasets.datasets import SpokenDigitDataset
-from models.baseline_cnn import AudioToDigitModel
+from src.ai.models.baseline_cnn import AudioToDigitModel
 from ai.preprocessing import Preprocess, collate_fn
-from ai.utils import accuracy_sc
+from ai.utils import load_state
+
+
+experiment_name = "audio2digit"
+experiment = mlflow.get_experiment_by_name(experiment_name)
+if experiment is None:
+    mlflow.create_experiment(experiment_name)
+mlflow.set_experiment(experiment_name)
 
 
 def main():
@@ -28,9 +33,7 @@ def main():
         collate_fn=collate_fn
     )
 
-    # Load model (from MLflow or DVC)
-    model_path = "models:/audio-cnn/latest"  # MLflow model URI
-    model = mlflow.pytorch.load_model(model_path)
+    model = load_state(model_path=settings.MODEL_PATH)
     model.to(settings.DEVICE)
 
     # Evaluate
@@ -39,7 +42,7 @@ def main():
     print("Classification Report:\n", report)
 
     # Log metrics to MLflow
-    with mlflow.start_run(run_name="evaluation"):
+    with mlflow.start_run():
         mlflow.log_metric("test_accuracy", accuracy)
         mlflow.log_text(report, "classification_report.txt")
 
@@ -63,3 +66,7 @@ def evaluate(loader: DataLoader, model: AudioToDigitModel, device: str):
     acc = accuracy_score(all_labels, all_preds)
     report = classification_report(all_labels, all_preds)
     return acc, report
+
+
+if __name__ == "__main__":
+    main()

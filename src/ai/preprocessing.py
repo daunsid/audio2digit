@@ -5,7 +5,13 @@ import torch.nn.functional as F
 
 
 class Preprocess(nn.Module):
-    def __init__(self, sample_rate=8000, n_fft=256, hop_length=128, n_mels=40, max_len=16000):
+    def __init__(
+        self,
+        sample_rate=8000,
+        n_fft=256,
+        hop_length=128,
+        n_mels=40,
+    ):
         """
         Args:
             sample_rate: Target sample rate for audio
@@ -15,7 +21,6 @@ class Preprocess(nn.Module):
             max_len: Maximum waveform length in samples for padding/truncating
         """
         super().__init__()
-        self.max_len = max_len
 
         self.mel_spec = nn.Sequential(
             torchaudio.transforms.MelSpectrogram(
@@ -27,7 +32,7 @@ class Preprocess(nn.Module):
             torchaudio.transforms.AmplitudeToDB()
         )
 
-    def forward(self, waveform: torch.Tensor):
+    def forward(self, waveform: torch.Tensor) -> torch.Tensor:
         waveform = waveform.float()
 
         if waveform.abs().max() > 1.0:
@@ -45,10 +50,10 @@ def collate_fn(batch: torch.Tensor, target_len=100):
 
     padded_mels = []
     for m in mels:
-        T = m.shape[-1]
-        if T < target_len:
-            m = F.pad(m, (0, target_len - T))
-        elif T > target_len:
+        mel_length = m.shape[-1]
+        if mel_length < target_len:
+            m = F.pad(m, (0, target_len - mel_length))
+        elif mel_length > target_len:
             m = m[:, :target_len]
         padded_mels.append(m)
 
@@ -57,3 +62,6 @@ def collate_fn(batch: torch.Tensor, target_len=100):
     labels = torch.tensor(labels)
 
     return mels, labels
+
+
+preprocess = Preprocess()

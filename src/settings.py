@@ -13,9 +13,11 @@ N_MELS = 40
 BATCH_SIZE = 32
 
 # model
-DEVICE = "cuda"
+DEVICE = "cpu"
 EPOCHS = 10
 LR = 1e-3
 LR_SCHEDULER = "ReduceLROnPlateau"
 EARLY_STOPING_PATIENCE = 5
 CHECK_POINT_DIR = "/kaggle/working/"
+MODEL_PATH="model_checkpoint/digit_cnn.pth"
+TRACKING_PATH="file:////mlruns"
