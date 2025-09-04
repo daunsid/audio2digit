@@ -2,5 +2,6 @@
 /mlruns/
 #/model_checkpoint
 pristine-ai-d37382d50d20.json
-*__pychache__
+*/__pychache__
+
 model_checkpoint
